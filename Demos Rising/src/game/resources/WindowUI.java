@@ -15,10 +15,12 @@ import javax.swing.JFrame;
 /** This class performs the majority of the basic UI interactions. It 
  * provides a space for rendering graphics as well as a convenient way of 
  * getting mouse and keyboard events.  */
-public class WindowCanvas /*extends Canvas*/ implements KeyListener{
+public class WindowUI implements KeyListener{
     
+    /** The window of the display.  */
     private JFrame _window;
     
+    /** The canvas upon which things are drawn.  */
     private Canvas _canvas;
     
     
@@ -44,14 +46,30 @@ public class WindowCanvas /*extends Canvas*/ implements KeyListener{
     /** The queue for key events from the canvas.  */
     private LinkedList<KeyEvent> _keyQueue;
     
+    
+    
+    /** A boolean that specifies whether to receive and queue KeyPressed 
+     *  events. */
+    private boolean _queueKeyPressed;
+    /** A boolean that specifies whether to receive and queue KeyReleased 
+     *  events. */
+    private boolean _queueKeyReleased;
     /** A boolean that specifies whether to receive and queue KeyTyped events.*/
-    private boolean _queueTypedEvents;
+    private boolean _queueKeyTyped;
+    
+    
+    /** This is a constant that limits the size of the input queues. This 
+     * is in case queues are enabled, but not emptied. 
+     * <p>
+     * Queue behavior should be to remove the oldest element if this limit
+     * is crossed.  */
+    private static final int EVENT_QUEUE_MAX_SIZE = 1000;
     
     
     
     
     /** */
-    public WindowCanvas(int width, int height) {
+    public WindowUI(int width, int height) {
         _width = width;
         _height = height;
         
@@ -77,9 +95,9 @@ public class WindowCanvas /*extends Canvas*/ implements KeyListener{
 //        this.adKeyListener(this);
         
         
-        //For this game, keyTyped events are mostly irrelevant. Therefore, 
-        //  these events are not buffered by default. 
-        _queueTypedEvents = false;
+        //The Buffering of UI events is on by default. Individual buffers need
+        // to be turned on by calling their respective 
+        _queueKeyTyped = false;
         
         
         _window.add(_canvas);
@@ -133,8 +151,10 @@ public class WindowCanvas /*extends Canvas*/ implements KeyListener{
     @Override
     public void keyPressed(KeyEvent event) {
         System.out.println("Pressed: '" + event.getKeyChar() + "' at " + event.getWhen());
-        synchronized(_keyLock) {
-            _keyQueue.offer(event);
+        if (_queueKeyPressed) {
+            synchronized(_keyLock) {
+                _keyQueue.offer(event);
+            }
         }
     } // end of keyPressed
     
@@ -143,8 +163,10 @@ public class WindowCanvas /*extends Canvas*/ implements KeyListener{
     @Override
     public void keyReleased(KeyEvent event) {
         System.out.println("Released: '" + event.getKeyChar() + "' at " + event.getWhen());
-        synchronized(_keyLock) {
-            _keyQueue.offer(event);
+        if (_queueKeyReleased) {
+            synchronized(_keyLock) {
+                _keyQueue.offer(event);
+            }
         }
     } // end of keyReleased
     
@@ -153,12 +175,18 @@ public class WindowCanvas /*extends Canvas*/ implements KeyListener{
     @Override
     public void keyTyped(KeyEvent event) {
         //Only buffer the event if suffering of typed events are enabled. 
-        if (_queueTypedEvents) {
+        if (_queueKeyTyped) {
             synchronized(_keyLock) {
                 _keyQueue.offer(event);
             }
         }
     } // end of keyTyped
+    
+    /** A private helper function that puts a key event into the buffer. 
+     * The process is synchronized to make the queue thread safe.  */
+    private void queueKeyEvent(KeyEvent event) {
+        
+    }
     
     
     
@@ -176,15 +204,28 @@ public class WindowCanvas /*extends Canvas*/ implements KeyListener{
     
     
     
+    /** This function sets if buffering of KeyPressed events is enabled.  */
+    public void setKeyPressedEnabled(boolean enabled) {
+        _queueKeyPressed = enabled;
+    } // end of setKeyPressedEnabled
+    
+    /** This function sets if buffering of KeyReleased events is enabled.  */
+    public void setKeyReleasedEnabled(boolean enabled) {
+        _queueKeyReleased = enabled;
+    } // end of setKeyReleasedEnabled
+    
     /** This function sets if buffering of KeyTyped events is enabled.  */
-    public void setTypedEventsEnabled(boolean enabled) {
-        _queueTypedEvents = enabled;
+    public void setKeyTypedEnabled(boolean enabled) {
+        _queueKeyTyped = enabled;
     } // end of setTypedEventsEnabled
+    
+    
+    
     
     /** This function returns true if KeyTyped events are enabled. False 
      * otherwise.  */
-    public boolean isTypedEventsEnabled() {
-        return _queueTypedEvents;
+    public boolean isKeyTypedEnabled() {
+        return _queueKeyTyped;
     } // end of isTypedEventsEnabled
     
     
@@ -192,7 +233,7 @@ public class WindowCanvas /*extends Canvas*/ implements KeyListener{
     
     public static void main(String args[]){
         JFrame w = new JFrame();
-        WindowCanvas c = new WindowCanvas(500, 500);
+        WindowUI c = new WindowUI(500, 500);
         
         //Closes program when window is closed. 
         w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -211,7 +252,7 @@ public class WindowCanvas /*extends Canvas*/ implements KeyListener{
     } // end of main
     
     
-} // end of WindowCanvas //
+} // end of WindowUI //
 
 
 
