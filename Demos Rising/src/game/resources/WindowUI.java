@@ -147,46 +147,48 @@ public class WindowUI implements KeyListener{
     
     
     /** Invoked when a key is pressed on this canvas. It buffers the key event
-     * for later retrieval from getKeyEvent().  */
+     * for later retrieval from getKeyEvent() if such buffering is enabled.  */
     @Override
     public void keyPressed(KeyEvent event) {
         System.out.println("Pressed: '" + event.getKeyChar() + "' at " + event.getWhen());
         if (_queueKeyPressed) {
-            synchronized(_keyLock) {
-                _keyQueue.offer(event);
-            }
+            queueKeyEvent(event);
         }
     } // end of keyPressed
     
     /** Invoked when a key is released on this canvas. It buffers the key event
-     * for later retrieval from getKeyEvent().  */
+     * for later retrieval from getKeyEvent() if such buffering is enabled.  */
     @Override
     public void keyReleased(KeyEvent event) {
         System.out.println("Released: '" + event.getKeyChar() + "' at " + event.getWhen());
         if (_queueKeyReleased) {
-            synchronized(_keyLock) {
-                _keyQueue.offer(event);
-            }
+            queueKeyEvent(event);
         }
     } // end of keyReleased
     
     /** Invoked when a key is typed on this canvas. It buffers the key event
-     * for later retrieval from getKeyEvent() if such buffering is enabled. */
+     * for later retrieval from getKeyEvent() if such buffering is enabled.  */
     @Override
     public void keyTyped(KeyEvent event) {
         //Only buffer the event if suffering of typed events are enabled. 
         if (_queueKeyTyped) {
-            synchronized(_keyLock) {
-                _keyQueue.offer(event);
-            }
+            queueKeyEvent(event);
         }
     } // end of keyTyped
     
     /** A private helper function that puts a key event into the buffer. 
      * The process is synchronized to make the queue thread safe.  */
     private void queueKeyEvent(KeyEvent event) {
-        
-    }
+        synchronized(_keyLock) {
+            //Remove the oldest event if the buffer is full. 
+            if (_keyQueue.size() > EVENT_QUEUE_MAX_SIZE) {
+                _keyQueue.removeFirst();
+            }
+            //Put the event into the queue. 
+            _keyQueue.offer(event);
+        }
+    } // queueKeyEvent
+    
     
     
     
@@ -230,7 +232,7 @@ public class WindowUI implements KeyListener{
     
     
     
-    
+    /** For TESTING */
     public static void main(String args[]){
         JFrame w = new JFrame();
         WindowUI c = new WindowUI(500, 500);
