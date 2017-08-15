@@ -150,7 +150,7 @@ public class WindowUI implements KeyListener{
      * for later retrieval from getKeyEvent() if such buffering is enabled.  */
     @Override
     public void keyPressed(KeyEvent event) {
-        System.out.println("Pressed: '" + event.getKeyChar() + "' at " + event.getWhen());
+//        System.out.println("Pressed: '" + event.getKeyChar() + "' at " + event.getWhen());
         if (_queueKeyPressed) {
             queueKeyEvent(event);
         }
@@ -160,7 +160,7 @@ public class WindowUI implements KeyListener{
      * for later retrieval from getKeyEvent() if such buffering is enabled.  */
     @Override
     public void keyReleased(KeyEvent event) {
-        System.out.println("Released: '" + event.getKeyChar() + "' at " + event.getWhen());
+//        System.out.println("Released: '" + event.getKeyChar() + "' at " + event.getWhen());
         if (_queueKeyReleased) {
             queueKeyEvent(event);
         }
@@ -206,6 +206,7 @@ public class WindowUI implements KeyListener{
     
     
     
+    
     /** This function sets if buffering of KeyPressed events is enabled.  */
     public void setKeyPressedEnabled(boolean enabled) {
         _queueKeyPressed = enabled;
@@ -223,7 +224,7 @@ public class WindowUI implements KeyListener{
     
     
     
-    
+    //TODO: Finish adding is<Event>Enabled functions. 
     /** This function returns true if KeyTyped events are enabled. False 
      * otherwise.  */
     public boolean isKeyTypedEnabled() {
@@ -238,8 +239,18 @@ public class WindowUI implements KeyListener{
         WindowUI c = new WindowUI(500, 500);
         
         //Closes program when window is closed. 
-        w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        c._window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        c.setKeyPressedEnabled(true);
+        c.setKeyReleasedEnabled(true);
+        while (true) {
+            if (c.hasKeyEvent()) {
+                System.out.println("Has Event");
+                System.out.println(c.getKeyEvent());
+            }
+//            System.out.println(c._keyQueue.size());
+            try{Thread.sleep(50);} catch(InterruptedException ex){}
+        }
 //        w.add(c);
 //        
 //        w.pack();

@@ -1,6 +1,8 @@
 package game.resources;
 
 import java.awt.Graphics;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 //import java.awt.image.DataBufferInt;
 //import java.awt.Color;
@@ -54,7 +56,34 @@ public class Sprite {
             int sx1, int sy1, int sx2, int sy2) {
         g.drawImage(_image, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
     }// end of draw
-
+    
+    
+    
+    
+//    //TODO:Optimize this function to move out redundant calculations. 
+//    /** Code used from AlanFoster. It rotates and draws the sprite at the 
+//     * specified position with specified degrees of rotation. It does not 
+//     * modify the original image, only the drawn image of this function call.*/
+//    public void rotateDraw(Graphics g, int x, int y, int degrees) {
+//        // Rotation information
+//
+//        double rotationRequired = Math.toRadians (degrees);
+//        double locationX = _image.getWidth() / 2;
+//        double locationY = _image.getHeight() / 2;
+//        AffineTransform tx = AffineTransform.getRotateInstance(
+//                                    rotationRequired, locationX, locationY);
+//        AffineTransformOp op = new AffineTransformOp(tx, 
+//                                            AffineTransformOp.TYPE_BILINEAR);
+//
+//        // Drawing the rotated image at the required drawing locations
+//        g.drawImage(op.filter(_image, null), x, y, null);
+//    } // end of rotateDraw
+//    
+    
+    
+    
+    
+    
     // /** This function is used in the event that RGB transparency is
     // implemented.
     // * It sets all pixels of a specific RGB value to an alpha of 0. These
