@@ -12,10 +12,13 @@ import javax.swing.JFrame;
 
 
 
-/** This class performs the majority of the basic UI interactions. It 
+/** This class performs the majority of the basic UI. It 
  * provides a space for rendering graphics as well as a convenient way of 
  * getting mouse and keyboard events.  */
 public class WindowUI implements KeyListener{
+    
+    //TODO: Add Mouse support. 
+    
     
     /** The window of the display.  */
     private JFrame _window;
@@ -65,10 +68,10 @@ public class WindowUI implements KeyListener{
      * is crossed.  */
     private static final int EVENT_QUEUE_MAX_SIZE = 1000;
     
+    /** Determines how many buffer layers the rendering canvas should have.  */
+    private static final int RENDER_BUFFERS = 2;
     
-    
-    
-    /** */
+    /** Creates a new Window for user interaction.  */
     public WindowUI(int width, int height) {
         _width = width;
         _height = height;
@@ -104,23 +107,36 @@ public class WindowUI implements KeyListener{
         _window.pack();
         _window.setVisible(true);
         
-        
+        //Create a buffer strategy for the canvas. 
+        _canvas.createBufferStrategy(RENDER_BUFFERS);
+        _buffer = _canvas.getBufferStrategy();
     } // end of WindowCanvas
     
     
     
     
-    /** Creates a 2 buffer strategy. Should only be called once while the window
-     * is visible so there is graphical context for the creation of the buffer.
-     * This should also be called only before rendering. */
-    public void createBufferStrategy() {
-        _canvas.createBufferStrategy(2);
-        _buffer = _canvas.getBufferStrategy();
-    } // end of createBufferStrategy
     
     
+//    /** Creates a 2 buffer strategy. Should only be called once while the window
+//     * is visible so there is graphical context for the creation of the buffer.
+//     * This should also be called only before rendering. */
+//    public void createBufferStrategy() {
+//        _canvas.createBufferStrategy(2);
+//        _buffer = _canvas.getBufferStrategy();
+//    } // end of createBufferStrategy
     
-    /** Draws the contents of the graphics from the buffer to the screen.  */
+    /** This function gets a graphics object from the canvas graphical buffer
+     * for rendering to the window. Use this to get a new object every frame. */
+    public Graphics getGraphics() {
+        //Get the graphics from the buffer strategy
+        _graphics = _buffer.getDrawGraphics();
+        
+        return _graphics;
+    }
+    
+    
+    /** Draws the contents of the graphics from the buffer to the screen. Use 
+     * to draw a frame after rendering the graphics. */
     public void Draw(){
         //If the volatile contents of the buffer haven't been lost, draw the 
         //  contents. 
@@ -192,45 +208,60 @@ public class WindowUI implements KeyListener{
     
     
     
-    /** This function returns true if there are events in the KeyEvent queue. 
+    /** Returns true if there are events in the KeyEvent queue. 
      * Returns false if there are no events.  */
     public boolean hasKeyEvent() {
         return !_keyQueue.isEmpty();
     } // hasKeyEvent
     
     /** Gets and removes the first key event in the KeyEvent queue. 
-     * @throws NoSuchElementException - If there are no events in the queue. */
+     * Returns null if there are no events. */
     public KeyEvent getKeyEvent() {
+        KeyEvent _returnVal;
+        
+        //Use synchronization to be thread safe. 
+        synchronized(_keyLock) {
+            _returnVal = _keyQueue.poll();
+        }
+        
         return _keyQueue.removeFirst();
     } // getKeyEvent
     
     
     
     
-    /** This function sets if buffering of KeyPressed events is enabled.  */
+    /** Sets if buffering of KeyPressed events is enabled.  */
     public void setKeyPressedEnabled(boolean enabled) {
         _queueKeyPressed = enabled;
     } // end of setKeyPressedEnabled
     
-    /** This function sets if buffering of KeyReleased events is enabled.  */
+    /** Sets if buffering of KeyReleased events is enabled.  */
     public void setKeyReleasedEnabled(boolean enabled) {
         _queueKeyReleased = enabled;
     } // end of setKeyReleasedEnabled
     
-    /** This function sets if buffering of KeyTyped events is enabled.  */
+    /** Sets if buffering of KeyTyped events is enabled.  */
     public void setKeyTypedEnabled(boolean enabled) {
         _queueKeyTyped = enabled;
     } // end of setTypedEventsEnabled
     
     
     
-    //TODO: Finish adding is<Event>Enabled functions. 
-    /** This function returns true if KeyTyped events are enabled. False 
-     * otherwise.  */
+    
+    /** Returns true if KeyPressed events are enabled. False otherwise.  */
+    public boolean isKeyPressedEnabled() {
+        return _queueKeyPressed;
+    } // end of isTypedEventsEnabled
+    
+    /** Returns true if KeyReleased events are enabled. False otherwise.  */
+    public boolean isKeyReleasedEnabled() {
+        return _queueKeyReleased;
+    } // end of isTypedEventsEnabled
+    
+    /** Returns true if KeyTyped events are enabled. False otherwise.  */
     public boolean isKeyTypedEnabled() {
         return _queueKeyTyped;
     } // end of isTypedEventsEnabled
-    
     
     
     /** For TESTING */
