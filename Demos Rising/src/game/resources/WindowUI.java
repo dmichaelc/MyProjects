@@ -211,6 +211,8 @@ public class WindowUI implements KeyListener{
     /** Returns true if there are events in the KeyEvent queue. 
      * Returns false if there are no events.  */
     public boolean hasKeyEvent() {
+        //As this is a non modifying function, it is safe to have it not
+        //  have synchronization overhead.
         return !_keyQueue.isEmpty();
     } // hasKeyEvent
     
@@ -224,7 +226,7 @@ public class WindowUI implements KeyListener{
             _returnVal = _keyQueue.poll();
         }
         
-        return _keyQueue.removeFirst();
+        return _returnVal;
     } // getKeyEvent
     
     
