@@ -131,11 +131,11 @@ public class WindowUI implements KeyListener{
         //Get the graphics from the buffer strategy
         _graphics = _buffer.getDrawGraphics();
         
-        //Clears the current video buffer.
+        //Clears the screen of the old graphics.
         _graphics.clearRect(0, 0, _width, _height);
         
         return _graphics;
-    }
+    } // getGraphics
     
     
     /** Draws the contents of the graphics from the buffer to the screen. Use 
