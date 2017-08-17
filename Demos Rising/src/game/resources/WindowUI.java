@@ -131,13 +131,16 @@ public class WindowUI implements KeyListener{
         //Get the graphics from the buffer strategy
         _graphics = _buffer.getDrawGraphics();
         
+        //Clears the current video buffer.
+        _graphics.clearRect(0, 0, _width, _height);
+        
         return _graphics;
     }
     
     
     /** Draws the contents of the graphics from the buffer to the screen. Use 
      * to draw a frame after rendering the graphics. */
-    public void Draw(){
+    public void draw(){
         //If the volatile contents of the buffer haven't been lost, draw the 
         //  contents. 
         if(!_buffer.contentsLost()){
@@ -148,7 +151,7 @@ public class WindowUI implements KeyListener{
                 _graphics.dispose();
             }
         }
-    } // end of Draw
+    } // end of draw
     
     
     
@@ -271,6 +274,8 @@ public class WindowUI implements KeyListener{
         JFrame w = new JFrame();
         WindowUI c = new WindowUI(500, 500);
         
+        int test = 0;
+        
         //Closes program when window is closed. 
         c._window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
@@ -282,6 +287,9 @@ public class WindowUI implements KeyListener{
                 System.out.println(c.getKeyEvent());
             }
 //            System.out.println(c._keyQueue.size());
+            c.getGraphics().drawString("asdf" + test, 10, 10);
+            test++;
+            c.draw();
             try{Thread.sleep(50);} catch(InterruptedException ex){}
         }
 //        w.add(c);
