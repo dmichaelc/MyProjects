@@ -66,6 +66,7 @@ public class GameManager {
         //           Auto_Mouse_Click in the projects03 folder)
         long frameStartTime = 0;
         long frameEndTime = 0;
+        long sleepMillis = 0;
         
         //Loop until some arbitrary quit condition is met. 
         //This loop controls updating and rendering of any game components
@@ -74,14 +75,22 @@ public class GameManager {
             //Get the start time of the frame. Calling nano is more accurate
             frameStartTime = System.currentTimeMillis();
             
-            update();
-            render();
+            _levelPlayer.update();
+            _levelPlayer.render(_window.getGraphics());
+            _window.draw();
             
             frameEndTime = System.currentTimeMillis();
             
+            
             //Sleep for the remaining amount of time to equal the requested FPS
+            // This is computed by subtracting the time taken in game processing
+            // from the total amount of milliseconds per frame.
+            sleepMillis = _millisPerFrame - (frameEndTime - frameStartTime);
             try {
-                Thread.sleep(_millisPerFrame - (frameEndTime - frameStartTime));
+                //Only sleep if the amount of time isn't negative. 
+                if (sleepMillis > 0) {
+                    Thread.sleep(sleepMillis);
+                }
             } catch (InterruptedException ex) {
                 //Do nothing if interrupted.
             }
@@ -93,15 +102,6 @@ public class GameManager {
     
     
     
-    
-    public void update() {
-        
-    }
-    
-    
-    public void render() {
-        
-    }
     
     
     
