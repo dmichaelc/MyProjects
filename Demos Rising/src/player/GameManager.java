@@ -87,7 +87,7 @@ public class GameManager {
             // from the total amount of milliseconds per frame.
             sleepMillis = _millisPerFrame - (frameEndTime - frameStartTime);
             try {
-                //Only sleep if the amount of time isn't negative. 
+                //Only sleep if the amount of time is positive. 
                 if (sleepMillis > 0) {
                     Thread.sleep(sleepMillis);
                 }
