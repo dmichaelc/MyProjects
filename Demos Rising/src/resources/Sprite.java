@@ -1,4 +1,4 @@
-package game.resources;
+package resources;
 
 import java.awt.Graphics;
 import java.awt.geom.AffineTransform;

@@ -1,4 +1,4 @@
-package game.resources;
+package resources;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
@@ -46,7 +46,7 @@ public class WindowUI implements KeyListener{
     /** An object lock for the KeyEvent buffer.  */
     private Object _keyLock = new Object();
     
-    /** The queue for key events from the canvas.  */
+    /** This is the buffer for keyboard events from the canvas. */
     private LinkedList<KeyEvent> _keyQueue;
     
     
@@ -91,15 +91,12 @@ public class WindowUI implements KeyListener{
         //Sets the size that the canvas wants to take up in the window. When 
         // pack() is called on the window, the window is sized to fit the 
         // canvas. 
-//        this.setPreferredSize(new Dimension(width, height));
         _canvas.setPreferredSize(new Dimension(width, height));
         
-        //Set the canvas to listen to key events. 
-//        this.adKeyListener(this);
         
         
         //The Buffering of UI events is on by default. Individual buffers need
-        // to be turned on by calling their respective 
+        // to be turned on or off by calling their respective enabler functions
         _queueKeyTyped = false;
         
         

@@ -1,4 +1,4 @@
-package game.resources;
+package resources;
 
 import java.awt.Color;
 import java.awt.GraphicsConfiguration;
