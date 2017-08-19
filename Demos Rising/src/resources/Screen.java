@@ -1,6 +1,7 @@
 package resources;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 
 /** A screen is defined as some object that needs updating and needs rendering.
  * Screen objects define methods to update their contents, render them, and
@@ -18,7 +19,10 @@ public interface Screen {
      * object to give to the ScreenManager. */
     public boolean hasNewScreen();
     
-    /** This gets a new screen object from the current screen object. */
+    /** This should get a new screen object from the current screen object. */
     public Screen getNewScreen();
+    
+    /** This function is called to pass a key event to the screen. */
+    public void handleKeyEvent(KeyEvent event);
     
 } // end of interface Screen
