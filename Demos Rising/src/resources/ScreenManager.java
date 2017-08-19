@@ -1,10 +1,10 @@
-package player;
+package resources;
 
-import resources.WindowUI;
+import player.LevelPlayer;
 
 /** This class manages all of the high level components of the game, 
  * like delegating map loading or rendering to necessary game components.  */
-public class GameManager {
+public class ScreenManager {
     
     /** This number represents the desired FPS for the game. 
      * The delay required to reach this FPS is calculated by the class. 
@@ -35,17 +35,17 @@ public class GameManager {
     
     
     
-    /** Constructs a new GameManager object.  */
-    public GameManager() {
+    /** Constructs a new ScreenManager object.  */
+    public ScreenManager() {
         //Compute the number of milliseconds that are in a single frame.
         //  Divide 1000ms by the desired frames per second to get milliseconds 
         //  per frame.
         _millisPerFrame = 1000 / DESIRED_FPS;
-    } // end of constructor GameManager
+    } // end of constructor ScreenManager
     
     
-    /** This function launches the game manager.  */
-    public void startGameManager() {
+    /** This function launches the screen manager.  */
+    public void startSreenManager() {
         
         //TODO: Put initialization stuff here
         
@@ -97,7 +97,7 @@ public class GameManager {
             
         } while (true);//TODO: change to some actual quit condition. 
         
-    } // end of startGameManager
+    } // end of startScreenManager
     
     
     
@@ -105,7 +105,7 @@ public class GameManager {
     
     
     
-} // end of GameManager //
+} // end of ScreenManager //
 
 
 
