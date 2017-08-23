@@ -1,4 +1,4 @@
-package editor;
+package gameEditor;
 
 public class EditorMain {
 

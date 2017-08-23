@@ -1,4 +1,4 @@
-package player;
+package gamePlayer;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;

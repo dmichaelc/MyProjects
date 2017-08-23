@@ -1,6 +1,6 @@
 package resources;
 
-import player.LevelPlayer;
+import gamePlayer.LevelPlayer;
 
 /** This class manages all of the high level components of the game, 
  * like delegating map loading or rendering to necessary game components.  */
@@ -80,9 +80,22 @@ public class ScreenManager {
         //This loop controls updating and rendering of any game components
         //  under the manager. 
         do {
+            
             //Get the start time of the frame. Calling nano is more accurate
             frameStartTime = System.currentTimeMillis();
             
+            //Check to see if there is a new screen. If so, replace the current
+            //  screen.
+            if (_currentScreen.hasNewScreen()) {
+                _currentScreen = _currentScreen.getNewScreen();
+            }
+            
+            //Get any buffered key inputs and pass them to the screen object. 
+            if (_window.hasKeyEvent()) {
+                _currentScreen.handleKeyEvent(_window.getKeyEvent());
+            }
+            
+            //Update the contents of the screen
             _currentScreen.update();
             _currentScreen.render(_window.getGraphics());
             _window.draw();
