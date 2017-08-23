@@ -30,17 +30,26 @@ public class ScreenManager {
     /** This object is used to play levels.  */
     private LevelPlayer _levelPlayer;
     
+    /** The screen that is currently receiving updates, input events, and 
+     * being rendered.  */
+    private Screen _currentScreen;
     
     
     
     
-    
-    /** Constructs a new ScreenManager object.  */
-    public ScreenManager() {
+    /** Constructs a new ScreenManager object. This also takes the screen
+     * object that will initially appear.  */
+    public ScreenManager(Screen initialScreen) {
         //Compute the number of milliseconds that are in a single frame.
         //  Divide 1000ms by the desired frames per second to get milliseconds 
         //  per frame.
         _millisPerFrame = 1000 / DESIRED_FPS;
+        
+        //Create a new user interface. 
+        _window = new WindowUI(TEMP_WIDTH, TEMP_HEIGHT);
+        
+        //Set the initial screen object. 
+        _currentScreen = initialScreen;
     } // end of constructor ScreenManager
     
     
@@ -49,8 +58,7 @@ public class ScreenManager {
         
         //TODO: Put initialization stuff here
         
-        //Create a new user interface. 
-        _window = new WindowUI(TEMP_WIDTH, TEMP_HEIGHT);
+        
         
         
         //TEMPORARY
@@ -75,8 +83,8 @@ public class ScreenManager {
             //Get the start time of the frame. Calling nano is more accurate
             frameStartTime = System.currentTimeMillis();
             
-            _levelPlayer.update();
-            _levelPlayer.render(_window.getGraphics());
+            _currentScreen.update();
+            _currentScreen.render(_window.getGraphics());
             _window.draw();
             
             frameEndTime = System.currentTimeMillis();
