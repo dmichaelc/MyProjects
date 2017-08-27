@@ -14,7 +14,7 @@ public class LevelPlayer extends Screen {
     
     
     Sprite test = ImageLoader.get().getSprite("assets\\image\\TestEnemy01.png");
-    
+    int xOffset = 0;
     /**  */
     public void update() {
         
@@ -22,7 +22,7 @@ public class LevelPlayer extends Screen {
     
     /** Handles the rendering of everything currently on screen in the level. */
     public void render(Graphics g) {
-        test.draw(g, 100, 100);
+        test.draw(g, 100 + xOffset, 100);
     }
     
     
@@ -42,6 +42,9 @@ public class LevelPlayer extends Screen {
     @Override
     public void handleKeyEvent(KeyEvent event) {
         // TODO Auto-generated method stub
+        if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
+            xOffset++;
+        }
         
     }
     

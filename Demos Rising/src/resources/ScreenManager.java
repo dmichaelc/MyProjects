@@ -48,6 +48,14 @@ public class ScreenManager {
         //Create a new user interface. 
         _window = new WindowUI(TEMP_WIDTH, TEMP_HEIGHT);
         
+        //TODO: Move into individual screen operations. 
+        //Enable the keyPressed and keyReleased events to be buffered
+        _window.setKeyPressedEnabled(true);
+        _window.setKeyReleasedEnabled(true);
+        
+        
+        
+        
         //Set the initial screen object. 
         _currentScreen = initialScreen;
     } // end of constructor ScreenManager
@@ -55,19 +63,6 @@ public class ScreenManager {
     
     /** This function launches the screen manager.  */
     public void startSreenManager() {
-        
-        //TODO: Put initialization stuff here
-        
-        
-        
-        
-        //TEMPORARY
-        //Just making a new level
-        _levelPlayer = new LevelPlayer();
-        
-        
-        
-        
         
         //The start and end times of the current frame. 
         //TODO: Implement the lossless frame rate controller (like from
@@ -93,11 +88,16 @@ public class ScreenManager {
             //Get any buffered key inputs and pass them to the screen object. 
             if (_window.hasKeyEvent()) {
                 _currentScreen.handleKeyEvent(_window.getKeyEvent());
+                System.out.println("KeyEvent");
             }
             
             //Update the contents of the screen
             _currentScreen.update();
+            
+            //Render the graphics of the screen to the GUI
             _currentScreen.render(_window.getGraphics());
+            
+            //Draw the graphics of the GUI to the actual computer screen.
             _window.draw();
             
             frameEndTime = System.currentTimeMillis();

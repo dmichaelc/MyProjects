@@ -49,5 +49,16 @@ public abstract class Screen {
     }
     
     
+    /** Used by screen objects to set a new screen.  */
+    protected void setNewScreen(Screen newScreen) {
+        //Set the new screen. 
+        _newScreen = newScreen;
+        
+        //Set the flag indicating that a new screen has been provided by this 
+        //  screen. 
+        _hasNewScreen = true;
+    }
+    
+    
     
 } // end of interface Screen
