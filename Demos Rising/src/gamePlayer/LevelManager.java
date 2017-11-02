@@ -8,7 +8,7 @@ import resources.Screen;
 import resources.Sprite;
 
 /** This class handles all of the  */
-public class LevelPlayer extends Screen {
+public class LevelManager extends Screen {
     
     
     

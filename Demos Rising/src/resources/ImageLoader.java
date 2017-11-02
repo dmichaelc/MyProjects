@@ -48,7 +48,7 @@ public class ImageLoader {
     } // end of setPreloading
     
     
-
+    /** This function attempts to pull a sprite from the saved */
     public Sprite getSprite(String ref) {
 
         if (Images.get(ref) != null) {

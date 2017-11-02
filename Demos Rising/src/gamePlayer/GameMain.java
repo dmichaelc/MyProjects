@@ -6,7 +6,7 @@ public class GameMain {
 
 
     public static void main(String[] args) {
-        LevelPlayer player = new LevelPlayer();
+        LevelManager player = new LevelManager();
         
         ScreenManager manager = new ScreenManager(player);
         

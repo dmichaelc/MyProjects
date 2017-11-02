@@ -1,6 +1,6 @@
 package resources;
 
-import gamePlayer.LevelPlayer;
+import gamePlayer.LevelManager;
 
 /** This class manages all of the high level components of the game, 
  * like delegating map loading or rendering to necessary game components.  */
@@ -28,7 +28,7 @@ public class ScreenManager {
     private WindowUI _window;
     
     /** This object is used to play levels.  */
-    private LevelPlayer _levelPlayer;
+    private LevelManager _levelPlayer;
     
     /** The screen that is currently receiving updates, input events, and 
      * being rendered.  */
